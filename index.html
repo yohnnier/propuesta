@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta ASENF 2025 - Ecosistema Digital Innova Lab</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul-oscuro: #002244;
+            --azul-corporativo: #005a9c;
+            --naranja: #f39c12;
+            --blanco: #ffffff;
+            --gris-fondo: rgba(244, 247, 249, 0.9);
+            --verde-exito: #27ae60;
+        }
+
+        * { box-sizing: border-box; }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            margin: 0; 
+            background-color: var(--azul-oscuro); 
+            color: #333; 
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        /* CANVAS INTERACTIVO GEOMÉTRICO */
+        #network-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        header { 
+            background: linear-gradient(135deg, rgba(0,34,68,0.95) 0%, rgba(0,90,156,0.9) 100%); 
+            color: white; 
+            padding: 4rem 2rem; 
+            text-align: center; 
+            border-bottom: 6px solid var(--naranja);
+            position: relative;
+            z-index: 10;
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 2rem; 
+            position: relative;
+            z-index: 5;
+        }
+        
+        .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        
+        .card { 
+            background: rgba(255, 255, 255, 0.85); 
+            padding: 1.2rem; 
+            border-radius: 12px; 
+            border-top: 4px solid var(--azul-corporativo); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover { 
+            transform: translateY(-10px); 
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-top-color: var(--naranja);
+        }
+
+        .card .icon-box { color: var(--naranja); margin-bottom: 0.6rem; height: 35px; display: flex; align-items: center; font-size: 1.8rem; }
+        .card h3 { color: var(--azul-oscuro); margin: 0.4rem 0; font-size: 0.82rem; border-bottom: 1px solid #ddd; padding-bottom: 0.3rem; text-transform: uppercase; font-weight: 800; }
+        .card p { font-size: 0.72rem; color: #444; margin: 0; font-weight: 500; }
+
+        .gas-cylinder { width: 28px; fill: var(--naranja); }
+
+        .fenasenf-banner {
+            background: rgba(0, 34, 68, 0.9);
+            color: white; padding: 2.5rem; border-radius: 20px; margin: 3rem 0; display: flex; align-items: center; gap: 2rem; border-left: 10px solid var(--naranja);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .google-box { background: rgba(255, 255, 255, 0.9); border-radius: 20px; padding: 2rem; margin: 2rem 0; border: 1px solid rgba(255,255,255,0.2); position: relative; backdrop-filter: blur(10px); }
+        .google-box::before { content: ""; position: absolute; top: 0; left: 0; width: 8px; height: 100%; background: linear-gradient(#4285F4, #EA4335, #FBBC05, #34A853); border-radius: 20px 0 0 20px; }
+        .google-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .google-item { display: flex; align-items: center; gap: 10px; background: rgba(248, 249, 250, 0.8); padding: 10px; border-radius: 10px; border: 1px solid #eee; }
+        .google-item img { width: 25px; height: 25px; object-fit: contain; }
+        .google-item span { font-size: 0.7rem; font-weight: 700; color: #444; }
+
+        .pricing-container { 
+            background: rgba(0, 34, 68, 0.95); 
+            color: white; border-radius: 20px; padding: 3rem; margin-top: 3rem; 
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .table-resumen { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+        .table-resumen th { text-align: left; padding: 1rem; color: var(--naranja); border-bottom: 2px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+        .table-resumen td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
+        .price-tag { font-size: 1.1rem; font-weight: 800; color: var(--naranja); }
+
+        .acuerdo-box {
+            background: rgba(255, 255, 255, 0.95); border: 4px solid var(--verde-exito); border-radius: 15px; padding: 2.5rem; margin: 3rem 0; display: flex; align-items: center; gap: 2rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+        .acuerdo-box i { font-size: 4rem; color: var(--verde-exito); }
+        .acuerdo-text h2 { color: var(--azul-oscuro); margin: 0; font-size: 1.5rem; text-transform: uppercase; font-weight: 800; }
+        .acuerdo-text p { margin: 15px 0 0; font-size: 1.05rem; font-weight: 600; line-height: 1.5; color: #333; }
+
+        .zoom-section { 
+            text-align: center; margin: 4rem 0; padding: 3rem; 
+            background: rgba(255, 255, 255, 0.95); border-radius: 20px; 
+            border: 2px dashed var(--azul-corporativo); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+        .btn-zoom { background: #2D8CFF; color: white; padding: 18px 45px; border-radius: 50px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 12px; transition: 0.3s; margin-top: 20px; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(45,140,255,0.3); }
+        .btn-zoom:hover { background: #1a73e8; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(45,140,255,0.5); }
+
+        .dev-footer { text-align: center; padding: 5rem 2rem; background: rgba(255, 255, 255, 0.98); border-top: 1px solid #eee; position: relative; z-index: 10; }
+        .dev-logo { max-width: 320px; height: auto; margin-bottom: 1.5rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); }
+        .dev-footer p { font-size: 0.8rem; color: #666; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<canvas id="network-canvas"></canvas>
+
+<header>
+    <div style="background:var(--naranja); color:var(--azul-oscuro); display:inline-block; padding:5px 25px; border-radius:50px; font-weight: 800; font-size:0.75rem; margin-bottom:15px; letter-spacing: 1px;">CONVENIO NACIONAL ASENF 2025</div>
+    <h1 style="margin:0; font-size: 2.6rem; letter-spacing: -1px; font-weight: 800;">Ecosistema Digital e Interconectado</h1>
+    <p style="margin:10px 0 0; opacity:0.95; font-size: 1.3rem; font-weight: 300;">Capacitación y Automatización Gremial por Innova Lab</p>
+</header>
+
+<div class="container">
+
+    <h2 style="text-align:center; color: #fff; font-size: 1.6rem; margin-bottom: 2rem; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">17 Módulos de Operación Estratégica</h2>
+    
+    <div class="grid-servicios">
+        <!-- 1 MOODLE -->
+        <div class="card reveal" style="border-top-color: var(--verde-exito);">
+            <div class="icon-box"><i class="fas fa-graduation-cap"></i></div>
+            <h3 style="color: var(--verde-exito);">Suite Moodle E-Learning</h3>
+            <p>Plataforma educativa con <strong>Curso de Estatuto Administrativo</strong> listo para ejecutar con las bases.</p>
+        </div>
+        <!-- 2 LIPIGAS -->
+        <div class="card reveal">
+            <div class="icon-box"><svg class="gas-cylinder" viewBox="0 0 24 24"><path d="M17,9V7c0-1.1-0.9-2-2-2h-1V4c0-0.55-0.45-1-1-1h-2C10.45,3,10,3.45,10,4v1H9C7.9,5,7,5.9,7,7v2c-2.21,0-4,1.79-4,4v7 c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2v-7C21,10.79,19.21,9,17,9z M9,7h6v2h-6V7z M19,20H5v-7c0-1.1,0.9-2,2-2h10 c1.1,0,2-0.9,2-2V20z"/></svg></div>
+            <h3>Gestión de Pedidos de Lipigas Automatizada</h3>
+            <p>Control total y despacho de vales con trazabilidad nacional para socios.</p>
+        </div>
+        <!-- 3 AFILIACIÓN -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-user-check"></i></div>
+            <h3>Afiliación Digital</h3>
+            <p>Inscripción online sincronizada de forma inmediata con el padrón nacional.</p>
+        </div>
+        <!-- 4 CASOS GREMIALES -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-gavel"></i></div>
+            <h3>Trazabilidad Legal Asociados</h3>
+            <p>El socio podrá realizar solicitud de casos de orientación o acompañamiento y consultar de forma online sus expediente.</p>
+        </div>
+        <!-- 5 ENCUESTAS -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-poll-h"></i></div>
+            <h3>Encuestas Tipo Google Form</h3>
+            <p>Módulo de consultas e investigación para toma de decisiones gremiales estratégicas.</p>
+        </div>
+        <!-- 6 AGENDA -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-calendar-alt"></i></div>
+            <h3>Agenda Gremial</h3>
+            <p>Hitos, reuniones de directiva y asambleas centralizadas en una sola red.</p>
+        </div>
+        <!-- 7 BITACORA WHATSAPP -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fab fa-whatsapp"></i></div>
+            <h3>Bitácora Vía WhatsApp</h3>
+            <p>Mediante WhatsApp podrás realizar el registro cronológico de tus actividades diarias.</p>
+        </div>
+        <!-- 8 ACTAS -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-file-pdf"></i></div>
+            <h3>Actas por Comité</h3>
+            <p>Digitalización jerarquizada y búsqueda inteligente de toda la documentación oficial.</p>
+        </div>
+        <!-- 9 GESTIÓN MENSUAL -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-users"></i></div>
+            <h3>Gestión de Socios</h3>
+            <p>Control exacto de flujos, ingresos y egresos mensuales de asociados regionales.</p>
+        </div>
+        <!-- 10 TESORERÍA -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-cash-register"></i></div>
+            <h3>Tesorería Integral</h3>
+            <p>Reportes automáticos en tiempo real de finanzas y recaudación gremial.</p>
+        </div>
+        <!-- 11 EMAILS -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-envelope-open-text"></i></div>
+            <h3>Emails Profesionales</h3>
+            <p>Cuentas corporativas @asenf.cl interconectadas con el ecosistema Google.</p>
+        </div>
+        <!-- 12 CUMPLEAÑOS (ACTUALIZADO A EMAIL) -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-birthday-cake"></i></div>
+            <h3>Fidelización Socios</h3>
+            <p>Saludos vía Email automatizados para cada socio en su día especial.</p>
+        </div>
+        <!-- 13 BOT IA -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-brain"></i></div>
+            <h3>Bot IA Doble Perfil</h3>
+            <p>Soporte Clínico y Administrativo 24/7 de alta precisión basado en IA generativa.</p>
+        </div>
+        <!-- 14 CERTIFICADOS -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-id-badge"></i></div>
+            <h3>Certificados Online</h3>
+            <p>Generación de vigencia inmediata para convenios locales y nacionales.</p>
+        </div>
+        <!-- 15 VOTACIÓN -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-check-double"></i></div>
+            <h3>Votación Digital</h3>
+            <p>Asambleas virtuales seguras con módulo de votación encriptada para bases.</p>
+        </div>
+        <!-- 16 SORTEOS -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-trophy"></i></div>
+            <h3>Sorteos Bienestar</h3><p>Sistema aleatorio transparente para actividades y premios de asociados.</p>
+        </div>
+        <!-- 17 SINCRO RRSS -->
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-share-alt"></i></div>
+            <h3>Sincro Redes Sociales</h3><p>Publicación automática de beneficios y noticias en redes nacionales.</p>
+        </div>
+    </div>
+
+    <!-- FENASENF -->
+    <div class="fenasenf-banner reveal">
+        <div class="icon-box" style="font-size: 3.5rem; color: var(--naranja);"><i class="fas fa-project-diagram"></i></div>
+        <div class="fenasenf-content">
+            <h2 style="font-weight: 800;">Interconectividad Nacional FENASENF</h2>
+            <p>Este sistema permite la <strong>formación continua y actualización de convenios</strong> en línea, articulando la comunicación estratégica con todas las bases regionales.</p>
+        </div>
+    </div>
+
+    <!-- Google Workspace Section -->
+    <div class="google-box reveal">
+        <h2 style="margin:0; color: #333; font-size: 1.3rem; font-weight: 800;">Google Workspace Starter <span style="color:var(--verde-exito); font-size: 0.8rem; letter-spacing: 1px;">(14 DÍAS GRATIS)</span></h2>
+        <div class="google-grid">
+            <div class="google-item"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg"><span>Gmail Profesional</span></div>
+            <div class="google-item"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Google_Meet_icon_%282020%29.svg"><span>Meet (<strong>Sin límite de tiempo</strong>)</span></div>
+            <div class="google-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Google_Gemini_logo_2025.svg/1280px-Google_Gemini_logo_2025.svg.png"><span>Gemini IA 2025</span></div>
+            <div class="google-item"><img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Google_Drive_icon_%282020%29.svg"><span>30 GB Drive</span></div>
+            <div class="google-item"><img src="https://brandlogos.net/wp-content/uploads/2024/04/google_vids-logo_brandlogos.net_fvidc.png"><span>Google Vids IA</span></div>
+        </div>
+    </div>
+
+    <!-- Presupuesto -->
+    <div class="pricing-container reveal">
+        <h2 style="margin:0; color: var(--naranja); font-size: 1.8rem; font-weight: 800;">Plan de Inversión Estratégica</h2>
+        <table class="table-resumen">
+            <thead>
+                <tr><th>Concepto</th><th>Modalidad</th><th>Inversión (CLP)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>COSTO VITAL ANUAL</strong><br><small>Dominio, Certificados SSL y Servidor de Datos Profesional.</small></td><td>Mandatorio</td><td><span class="price-tag">$40.000</span></td>
+                </tr>
+                <tr><td><strong>PLATAFORMA RED ASENF (17 MÓDULOS)</strong><br><small>Incluye Suite Moodle, Soporte y Capacitación.</small></td><td>Cuotas Fijas</td><td><span class="price-tag">12 x $88.000</span></td>
+                </tr>
+                <tr><td><strong>BOT IA INDEPENDIENTE (CLÍNICO / ADMIN)</strong><br><small>Mantenimiento de base de conocimiento IA.</small></td><td>Opcional</td><td><span class="price-tag">$12.000 <small>mensual c/u</small></span></td>
+                </tr>
+                <tr><td><strong>BITÁCORA WHATSAPP (WEBHOOK)</strong><br><small>Interconexión móvil para registro de actividades diarias.</small></td><td>Opcional</td><td><span class="price-tag">$12.000 <small>mensual</small></span></td>
+                </tr>
+                <tr><td><strong>GOOGLE WORKSPACE STARTER</strong><br><small>Suite Corporativa + IA Gemini 2025.</small></td><td>Opcional</td><td><span class="price-tag">$12.500 <small>mensual</small></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Acuerdo de Pago -->
+    <div class="acuerdo-box reveal">
+        <i class="fas fa-handshake"></i>
+        <div class="acuerdo-text">
+            <h2>Garantía de Satisfacción Innova Lab</h2>
+            <p>Se firmará un acuerdo de pago formal donde se estipula que <strong>usted empezará a pagar una vez que reciba la página 100% funcional y operativa</strong>. Aseguramos la entrega de resultados tangibles antes de la primera cuota.</p>
+        </div>
+    </div>
+
+    <!-- Zoom Meeting -->
+    <div class="zoom-section reveal">
+        <i class="fas fa-video fa-4x" style="color: #2D8CFF;"></i>
+        <h2 style="font-weight: 800; color: var(--azul-oscuro);">¿Desea una demostración técnica en vivo?</h2>
+        <p style="font-size: 1.1rem;">Estamos <strong>totalmente disponibles</strong> para agendar una reunión por Zoom con la directiva nacional para resolver dudas y mostrar el potencial de la red.</p>
+        <a href="#" class="btn-zoom"><i class="fas fa-calendar-check"></i> AGENDAR REUNIÓN POR ZOOM</a>
+    </div>
+
+</div>
+
+<!-- Footer Innova Lab -->
+<footer class="dev-footer">
+    <img src="https://somnozzz.cl/wp-content/uploads/2026/01/ChatGPT-Image-10-ene-2026-11_49_51.png" alt="Innova Lab Logo" class="dev-logo">
+    <p>Desarrollado por Innova Lab</p>
+    <p style="font-size: 0.7rem; color: #aaa; margin-top: 15px; letter-spacing: 4px; font-weight: 800;">Capacitación y Automatización Inteligente</p>
+</footer>
+
+<script>
+    // --- MOTOR DE RED GEOMÉTRICA DINÁMICA ---
+    const canvas = document.getElementById('network-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const mouse = { x: null, y: null, radius: 150 };
+
+    window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = Math.random() * 1.5 - 0.75;
+            this.speedY = Math.random() * 1.5 - 0.75;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x > canvas.width) this.x = 0; else if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0; else if (this.y < 0) this.y = canvas.height;
+        }
+        draw() {
+            ctx.fillStyle = 'rgba(243, 156, 18, 0.4)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function init() {
+        particles = [];
+        let numberOfParticles = (canvas.width * canvas.height) / 9000;
+        for (let i = 0; i < numberOfParticles; i++) particles.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+            for (let j = i; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 100) {
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+            const dxMouse = particles[i].x - mouse.x;
+            const dyMouse = particles[i].y - mouse.y;
+            if (Math.sqrt(dxMouse**2 + dyMouse**2) < mouse.radius) {
+                ctx.strokeStyle = 'rgba(243, 156, 18, 0.2)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.stroke();
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            if (reveals[i].getBoundingClientRect().top < window.innerHeight - 100) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal();
+</script>
+
+</body>
+</html>
