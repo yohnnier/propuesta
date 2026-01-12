@@ -41,12 +41,173 @@
         header { 
             background: linear-gradient(135deg, rgba(0,34,68,0.95) 0%, rgba(0,90,156,0.9) 100%); 
             color: white; 
-            padding: 4rem 2rem; 
+            padding: 4rem 2rem 2rem;
             text-align: center; 
             border-bottom: 6px solid var(--naranja);
             position: relative;
             z-index: 10;
         }
+
+        header h1 {
+            font-size: 2.6rem;
+            letter-spacing: -1px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin: 10px 0 0;
+            opacity: 0.95;
+        }
+
+        /* --- SECCIÓN MEJORADA: IMPACT CARDS --- */
+        .impact-cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-top: 2.5rem;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            flex-wrap: wrap; 
+            padding: 0 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .impact-card {
+            background: var(--naranja);
+            color: var(--azul-oscuro);
+            padding: 1.3rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            flex: 1; 
+            min-width: 260px;
+            max-width: 300px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px;
+        }
+
+        /* ESTILOS ESPECIALES PARA LA TARJETA DE ESTADÍSTICAS */
+        .impact-card.is-stat-card {
+            max-width: 100%;
+            flex: 1 1 100%;
+            min-height: auto;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+        }
+        
+        /* Animación de aparición escalonada */
+        .impact-card:nth-child(1) { animation: cardFadeIn 0.6s ease-out forwards 0.3s; }
+        .impact-card:nth-child(2) { animation: cardFadeIn 0.6s ease-out forwards 0.5s; }
+        .impact-card:nth-child(3) { animation: cardFadeIn 0.6s ease-out forwards 0.7s; }
+        .impact-card:nth-child(4) { animation: cardFadeIn 0.6s ease-out forwards 0.9s; }
+
+        @keyframes cardFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .impact-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+
+        .impact-card .icon {
+            font-size: 2.5rem;
+            color: var(--azul-oscuro);
+            margin-bottom: 0.6rem;
+        }
+
+        .impact-card h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin: 0.4rem 0 0.8rem;
+            color: var(--azul-oscuro);
+        }
+        
+        .impact-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: auto 0;
+        }
+
+        .impact-card .animated-text-wrap {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            max-width: 100%;
+            white-space: normal;
+            text-align: center;
+        }
+
+        .impact-card .animated-text {
+            display: inline;
+            white-space: normal;
+            border-right: 2px solid transparent;
+        }
+        .impact-card .animated-text.typing-cursor {
+            border-right-color: var(--azul-oscuro);
+            animation: blinking-cursor 0.75s step-end infinite;
+        }
+
+        .impact-card .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--azul-oscuro);
+            margin-top: 0.8rem;
+            display: block;
+            min-height: 35px;
+        }
+        .impact-card .stat-text {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: rgba(0,34,68,0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 0.2rem;
+        }
+
+        @keyframes blinking-cursor {
+            from, to { border-color: transparent }
+            50% { border-color: var(--azul-oscuro); }
+        }
+
+        /* --- Fin de la sección de Impact Cards --- */
 
         .container { 
             max-width: 1200px; 
@@ -56,7 +217,12 @@
             z-index: 5;
         }
         
-        .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .grid-servicios { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 1.5rem; 
+            margin: 4rem 0 2rem;
+        }
         
         .card { 
             background: rgba(255, 255, 255, 0.85); 
@@ -69,6 +235,7 @@
             border: 1px solid rgba(255,255,255,0.3);
             display: flex;
             flex-direction: column;
+            min-height: 180px; 
         }
 
         .card:hover { 
@@ -90,8 +257,13 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
+        .fenasenf-banner .icon-box { font-size: 3.5rem; color: var(--naranja); flex-shrink: 0; }
+        .fenasenf-banner h2 { font-weight: 800; margin: 0; }
+        .fenasenf-banner p { margin: 0; }
 
-        .google-box { background: rgba(255, 255, 255, 0.9); border-radius: 20px; padding: 2rem; margin: 2rem 0; border: 1px solid rgba(255,255,255,0.2); position: relative; backdrop-filter: blur(10px); }
+        .google-box { 
+            background: rgba(255, 255, 255, 0.9); border-radius: 20px; padding: 2rem; margin: 2rem 0; border: 1px solid rgba(255,255,255,0.2); position: relative; backdrop-filter: blur(10px); 
+        }
         .google-box::before { content: ""; position: absolute; top: 0; left: 0; width: 8px; height: 100%; background: linear-gradient(#4285F4, #EA4335, #FBBC05, #34A853); border-radius: 20px 0 0 20px; }
         .google-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
         .google-item { display: flex; align-items: center; gap: 10px; background: rgba(248, 249, 250, 0.8); padding: 10px; border-radius: 10px; border: 1px solid #eee; }
@@ -114,7 +286,7 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             backdrop-filter: blur(10px);
         }
-        .acuerdo-box i { font-size: 4rem; color: var(--verde-exito); }
+        .acuerdo-box i { font-size: 4rem; color: var(--verde-exito); flex-shrink: 0; }
         .acuerdo-text h2 { color: var(--azul-oscuro); margin: 0; font-size: 1.5rem; text-transform: uppercase; font-weight: 800; }
         .acuerdo-text p { margin: 15px 0 0; font-size: 1.05rem; font-weight: 600; line-height: 1.5; color: #333; }
 
@@ -125,7 +297,11 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
         }
-        .btn-zoom { background: #2D8CFF; color: white; padding: 18px 45px; border-radius: 50px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 12px; transition: 0.3s; margin-top: 20px; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(45,140,255,0.3); }
+        .btn-zoom { 
+            background: #2D8CFF; color: white; padding: 18px 45px; border-radius: 50px; text-decoration: none; 
+            font-weight: 800; display: inline-flex; align-items: center; gap: 12px; transition: 0.3s; 
+            margin-top: 20px; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(45,140,255,0.3); 
+        }
         .btn-zoom:hover { background: #1a73e8; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(45,140,255,0.5); }
 
         .dev-footer { text-align: center; padding: 5rem 2rem; background: rgba(255, 255, 255, 0.98); border-top: 1px solid #eee; position: relative; z-index: 10; }
@@ -134,6 +310,237 @@
 
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- MEDIA QUERIES PARA RESPONSIVIDAD --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 2.5rem 1rem 1.5rem;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            header p {
+                font-size: 1rem;
+            }
+
+            .impact-cards-container {
+                flex-direction: column; 
+                align-items: center; 
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+            .impact-card {
+                min-width: 90%; 
+                max-width: 350px;
+                padding: 1rem;
+                min-height: 180px;
+            }
+
+            /* Tarjeta de estadísticas en modo vertical en móvil */
+            .impact-card.is-stat-card {
+                max-width: 350px;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stat-item {
+                min-width: 100%;
+            }
+
+            .impact-card .icon {
+                font-size: 2rem;
+            }
+            .impact-card h3 {
+                font-size: 1rem;
+            }
+            .impact-card p {
+                font-size: 0.8rem;
+                min-height: 50px;
+            }
+            .impact-card .stat-number {
+                font-size: 1.8rem;
+            }
+            .impact-card .stat-text {
+                font-size: 0.7rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.4rem !important; 
+                margin-bottom: 1.5rem !important;
+            }
+
+            .grid-servicios {
+                grid-template-columns: 1fr; 
+                gap: 1.2rem;
+                margin-top: 2.5rem;
+            }
+
+            .card {
+                padding: 1rem;
+                min-height: auto; 
+            }
+            .card .icon-box {
+                font-size: 1.5rem;
+                height: auto;
+            }
+            .card h3 {
+                font-size: 0.9rem;
+            }
+            .card p {
+                font-size: 0.8rem;
+            }
+
+            .fenasenf-banner {
+                flex-direction: column; 
+                text-align: center;
+                gap: 1.5rem;
+                padding: 1.8rem;
+            }
+            .fenasenf-banner .icon-box {
+                margin-bottom: 0.5rem;
+            }
+            .fenasenf-banner h2 {
+                font-size: 1.3rem;
+            }
+
+            .google-box {
+                padding: 1.5rem;
+            }
+            .google-box h2 {
+                font-size: 1.1rem;
+            }
+            .google-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+                gap: 0.8rem;
+            }
+            .google-item {
+                padding: 8px;
+            }
+            .google-item span {
+                font-size: 0.65rem;
+            }
+
+            .pricing-container {
+                padding: 2rem 1.5rem;
+            }
+            .pricing-container h2 {
+                font-size: 1.5rem;
+                text-align: center;
+            }
+            .table-resumen, .table-resumen tbody, .table-resumen tr, .table-resumen td {
+                display: block;
+                width: 100%;
+            }
+            .table-resumen thead {
+                display: none; 
+            }
+            .table-resumen tr {
+                margin-bottom: 1rem;
+                border: 1px solid rgba(255,255,255,0.1);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+            .table-resumen td {
+                text-align: right;
+                padding-left: 50%; 
+                position: relative;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            .table-resumen td:last-child {
+                border-bottom: 0;
+            }
+            .table-resumen td::before {
+                content: attr(data-label); 
+                position: absolute;
+                left: 1rem;
+                width: calc(50% - 1.5rem);
+                padding-right: 1rem;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 700;
+                color: var(--naranja);
+            }
+            .price-tag {
+                font-size: 1rem;
+            }
+
+            .acuerdo-box {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+                padding: 2rem;
+            }
+            .acuerdo-box i {
+                margin-bottom: 0.5rem;
+            }
+            .acuerdo-text h2 {
+                font-size: 1.3rem;
+            }
+            .acuerdo-text p {
+                font-size: 0.95rem;
+            }
+
+            .zoom-section {
+                padding: 2rem;
+                margin: 3rem 0;
+            }
+            .zoom-section i {
+                font-size: 3rem !important;
+            }
+            .zoom-section h2 {
+                font-size: 1.4rem !important;
+            }
+            .zoom-section p {
+                font-size: 1rem;
+            }
+            .btn-zoom {
+                padding: 15px 30px;
+                font-size: 1rem;
+                text-align: center;
+            }
+
+            .dev-footer {
+                padding: 3rem 1rem;
+            }
+            .dev-logo {
+                max-width: 250px;
+            }
+            .dev-footer p {
+                font-size: 0.7rem;
+                letter-spacing: 2px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            header p {
+                font-size: 0.9rem;
+            }
+            .btn-zoom {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Media query para tablets y escritorio - mantener horizontal */
+        @media (min-width: 769px) {
+            .impact-card.is-stat-card {
+                min-width: 90%;
+            }
+
+            .stats-container {
+                flex-direction: row;
+            }
+        }
     </style>
 </head>
 <body>
@@ -142,8 +549,45 @@
 
 <header>
     <div style="background:var(--naranja); color:var(--azul-oscuro); display:inline-block; padding:5px 25px; border-radius:50px; font-weight: 800; font-size:0.75rem; margin-bottom:15px; letter-spacing: 1px;">CONVENIO NACIONAL ASENF 2025</div>
-    <h1 style="margin:0; font-size: 2.6rem; letter-spacing: -1px; font-weight: 800;">Ecosistema Digital e Interconectado</h1>
-    <p style="margin:10px 0 0; opacity:0.95; font-size: 1.3rem; font-weight: 300;">Capacitación y Automatización Gremial por Innova Lab</p>
+    <h1>Ecosistema Digital e Interconectado</h1>
+    <p>Capacitación y Automatización Gremial por Innova Lab</p>
+
+    <!-- SECCIÓN MEJORADA: IMPACT CARDS -->
+    <div class="impact-cards-container">
+        <div class="impact-card">
+            <i class="fas fa-magic icon"></i>
+            <h3>Simplifica y Optimiza</h3>
+            <p><span class="animated-text-wrap"><span class="animated-text-content" data-text="Olvídate de las jornadas largas haciendo procesos repetitivos. Agiliza la gestión y enfócate en lo importante."></span></span></p>
+        </div>
+        <div class="impact-card">
+            <i class="fas fa-user-friends icon"></i>
+            <h3>Perfeccionamiento y Campo</h3>
+            <p><span class="animated-text-wrap"><span class="animated-text-content" data-text="Aprovecha tu tiempo en procesos de perfeccionamiento gremial y en trabajo en terreno con los socios."></span></span></p>
+        </div>
+        <div class="impact-card">
+            <i class="fas fa-medal icon"></i>
+            <h3>Marca y Futuro</h3>
+            <p><span class="animated-text-wrap"><span class="animated-text-content" data-text="Brinda un branding (marca) de un gremio moderno que se prepara para los desafíos del futuro."></span></span></p>
+        </div>
+        <div class="impact-card is-stat-card">
+            <i class="fas fa-chart-pie icon"></i>
+            <h3>Impacto Directo</h3>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-number animated-number" data-target="24/7">0</span>
+                    <span class="stat-text">Presencia Continua</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number animated-number" data-target="99%">0%</span>
+                    <span class="stat-text">Menos Errores</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number animated-number" data-target="40%">0%</span>
+                    <span class="stat-text">Menos Horas de Trabajo</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
 
 <div class="container">
@@ -217,7 +661,7 @@
             <h3>Emails Profesionales</h3>
             <p>Cuentas corporativas @asenf.cl interconectadas con el ecosistema Google.</p>
         </div>
-        <!-- 12 CUMPLEAÑOS (ACTUALIZADO A EMAIL) -->
+        <!-- 12 CUMPLEAÑOS -->
         <div class="card reveal">
             <div class="icon-box"><i class="fas fa-birthday-cake"></i></div>
             <h3>Fidelización Socios</h3>
@@ -255,7 +699,7 @@
 
     <!-- FENASENF -->
     <div class="fenasenf-banner reveal">
-        <div class="icon-box" style="font-size: 3.5rem; color: var(--naranja);"><i class="fas fa-project-diagram"></i></div>
+        <div class="icon-box"><i class="fas fa-project-diagram"></i></div>
         <div class="fenasenf-content">
             <h2 style="font-weight: 800;">Interconectividad Nacional FENASENF</h2>
             <p>Este sistema permite la <strong>formación continua y actualización de convenios</strong> en línea, articulando la comunicación estratégica con todas las bases regionales.</p>
@@ -282,15 +726,15 @@
                 <tr><th>Concepto</th><th>Modalidad</th><th>Inversión (CLP)</th></tr>
             </thead>
             <tbody>
-                <tr><td><strong>COSTO VITAL ANUAL</strong><br><small>Dominio, Certificados SSL y Servidor de Datos Profesional.</small></td><td>Mandatorio</td><td><span class="price-tag">$40.000</span></td>
+                <tr><td data-label="Concepto"><strong>COSTO VITAL ANUAL</strong><br><small>Dominio, Certificados SSL y Servidor de Datos Profesional.</small></td><td data-label="Modalidad">Mandatorio</td><td data-label="Inversión (CLP)"><span class="price-tag">$40.000</span></td>
                 </tr>
-                <tr><td><strong>PLATAFORMA RED ASENF (17 MÓDULOS)</strong><br><small>Incluye Suite Moodle, Soporte y Capacitación.</small></td><td>Cuotas Fijas</td><td><span class="price-tag">12 x $88.000</span></td>
+                <tr><td data-label="Concepto"><strong>PLATAFORMA RED ASENF (17 MÓDULOS)</strong><br><small>Incluye Suite Moodle, Soporte y Capacitación.</small></td><td data-label="Modalidad">Cuotas Fijas</td><td data-label="Inversión (CLP)"><span class="price-tag">12 x $88.000</span></td>
                 </tr>
-                <tr><td><strong>BOT IA INDEPENDIENTE (CLÍNICO / ADMIN)</strong><br><small>Mantenimiento de base de conocimiento IA.</small></td><td>Opcional</td><td><span class="price-tag">$12.000 <small>mensual c/u</small></span></td>
+                <tr><td data-label="Concepto"><strong>BOT IA INDEPENDIENTE (CLÍNICO / ADMIN)</strong><br><small>Mantenimiento de base de conocimiento IA.</small></td><td data-label="Modalidad">Opcional</td><td data-label="Inversión (CLP)"><span class="price-tag">$12.000 <small>mensual c/u</small></span></td>
                 </tr>
-                <tr><td><strong>BITÁCORA WHATSAPP (WEBHOOK)</strong><br><small>Interconexión móvil para registro de actividades diarias.</small></td><td>Opcional</td><td><span class="price-tag">$12.000 <small>mensual</small></span></td>
+                <tr><td data-label="Concepto"><strong>BITÁCORA WHATSAPP (WEBHOOK)</strong><br><small>Interconexión móvil para registro de actividades diarias.</small></td><td data-label="Modalidad">Opcional</td><td data-label="Inversión (CLP)"><span class="price-tag">$12.000 <small>mensual</small></span></td>
                 </tr>
-                <tr><td><strong>GOOGLE WORKSPACE STARTER</strong><br><small>Suite Corporativa + IA Gemini 2025.</small></td><td>Opcional</td><td><span class="price-tag">$12.500 <small>mensual</small></span></td>
+                <tr><td data-label="Concepto"><strong>GOOGLE WORKSPACE STARTER</strong><br><small>Suite Corporativa + IA Gemini 2025.</small></td><td data-label="Modalidad">Opcional</td><td data-label="Inversión (CLP)"><span class="price-tag">$12.500 <small>mensual</small></span></td>
                 </tr>
             </tbody>
         </table>
@@ -401,16 +845,120 @@
     init();
     animate();
 
+    // --- REVEAL ORIGINAL ---
     function reveal() {
         var reveals = document.querySelectorAll(".reveal");
         for (var i = 0; i < reveals.length; i++) {
-            if (reveals[i].getBoundingClientRect().top < window.innerHeight - 100) {
+            var windowHeight = window.innerHeight;
+            var revealTop = reveals[i].getBoundingClientRect().top;
+            var revealPoint = 150;
+
+            if (revealTop < windowHeight - revealPoint) {
                 reveals[i].classList.add("active");
             }
         }
     }
     window.addEventListener("scroll", reveal);
     reveal();
+
+    // --- IMPACT CARDS ANIMATIONS (TYPEWRITER & NUMBER COUNTER) ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const impactCards = document.querySelectorAll('.impact-card');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const card = entry.target;
+
+                    // Animate text content
+                    const textContentElement = card.querySelector('.animated-text-content');
+                    if (textContentElement && !textContentElement.dataset.animated) {
+                        const originalText = textContentElement.dataset.text;
+                        const textContainer = textContentElement.parentNode;
+                        
+                        textContentElement.textContent = '';
+                        textContentElement.classList.add('typing-cursor');
+
+                        let i = 0;
+                        const typeWriterSpeed = 40;
+
+                        function typeWriter() {
+                            if (i < originalText.length) {
+                                textContentElement.textContent += originalText.charAt(i);
+                                i++;
+                                setTimeout(typeWriter, typeWriterSpeed);
+                            } else {
+                                textContentElement.classList.remove('typing-cursor');
+                            }
+                        }
+                        setTimeout(typeWriter, 200);
+                        textContentElement.dataset.animated = 'true';
+                    }
+
+                    // Animate numbers
+                    const numberElements = card.querySelectorAll('.animated-number');
+                    numberElements.forEach(numElem => {
+                        if (!numElem.dataset.animated) {
+                            const targetValue = numElem.dataset.target;
+                            let currentValue = 0;
+                            const duration = 1500;
+                            const isPercentage = targetValue.includes('%');
+                            const is24_7 = targetValue === '24/7';
+
+                            let startValue = 0;
+                            let endValue;
+
+                            if (is24_7) {
+                                endValue = 1;
+                            } else if (isPercentage) {
+                                endValue = parseInt(targetValue.replace('%', ''));
+                            } else {
+                                endValue = parseInt(targetValue);
+                            }
+
+                            let startTime = null;
+
+                            function animateNumber(timestamp) {
+                                if (!startTime) startTime = timestamp;
+                                const progress = Math.min((timestamp - startTime) / duration, 1);
+
+                                if (is24_7) {
+                                    if (progress < 1) {
+                                        const hours = Math.round(progress * 24);
+                                        const days = Math.round(progress * 7);
+                                        numElem.textContent = `${hours}/${days}`;
+                                    } else {
+                                        numElem.textContent = '24/7';
+                                    }
+                                } else {
+                                    currentValue = Math.floor(progress * endValue);
+                                    numElem.textContent = currentValue + (isPercentage ? '%' : '');
+                                }
+
+                                if (progress < 1) {
+                                    requestAnimationFrame(animateNumber);
+                                } else {
+                                    numElem.textContent = targetValue;
+                                }
+                            }
+                            requestAnimationFrame(animateNumber);
+                            numElem.dataset.animated = 'true';
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        impactCards.forEach(card => {
+            observer.observe(card);
+        });
+    });
 </script>
 
 </body>
